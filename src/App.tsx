@@ -6,8 +6,14 @@ import About from './pages/About';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Footer from './components/Footer';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useSelector } from 'react-redux';
+import { getThemeState } from './app/theme/themeSlice';
 
 const App = () => {
+  const { theme } = useSelector(getThemeState);
+
   return (
     <BrowserRouter>
       <Header />
@@ -19,6 +25,18 @@ const App = () => {
         <Route path='/sign-up' element={<SignUp />} />
       </Routes>
       <Footer />
+      <ToastContainer
+        position='bottom-right'
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme={theme}
+      />
     </BrowserRouter>
   );
 };

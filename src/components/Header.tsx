@@ -1,20 +1,15 @@
 import ThemeController from './ThemeController';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { themeChange } from 'theme-change';
-import { getAuthState } from '../app/auth/authSlice';
+import useAuth from '../hooks/useAuth';
 
 const Header = () => {
+  const { authState, loggedIn, signOut } = useAuth();
+
   useEffect(() => {
     themeChange(false);
   }, []);
-
-  const authState = useSelector(getAuthState);
-
-  useEffect(() => {
-    console.log('authState: ', authState);
-  }, [authState]);
 
   return (
     <div className='navbar bg-base-100 shadow-md'>
@@ -41,13 +36,19 @@ const Header = () => {
             className='menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52'
           >
             <li>
-              <Link to='/'>Home</Link>
+              <Link to='/' className='text-base font-semibold'>
+                Home
+              </Link>
             </li>
             <li>
-              <Link to='/teachers'>Teachers</Link>
+              <Link to='/teachers' className='text-base font-semibold'>
+                Teachers
+              </Link>
             </li>
             <li>
-              <Link to='/about'>About</Link>
+              <Link to='/about' className='text-base font-semibold'>
+                About
+              </Link>
             </li>
           </ul>
         </div>
@@ -68,11 +69,37 @@ const Header = () => {
           </li>
         </ul>
       </div>
+
       <div className='navbar-end gap-2'>
         <ThemeController className='w-7 h-7' />
-        <Link to='/sign-in'>
-          <button className='btn btn-primary'>{'Sign In'}</button>
-        </Link>
+        {loggedIn ? (
+          <div className='dropdown dropdown-bottom dropdown-end'>
+            <div tabIndex={0} role='button' className='m-1 btn'>
+              <div className='avatar'>
+                <div className='w-8 h-8 rounded-full'>
+                  <img src={authState.profile?.avatar} />
+                </div>
+              </div>
+            </div>
+            <ul
+              tabIndex={0}
+              className='dropdown-content z-[1] menu p-2 shadow bg-base-200 rounded-box w-52'
+            >
+              <li>
+                <a className='text-sm font-semibold'>Profile</a>
+              </li>
+              <li>
+                <div onClick={signOut} className='text-sm font-semibold'>
+                  Sign Out
+                </div>
+              </li>
+            </ul>
+          </div>
+        ) : (
+          <Link to='/sign-in'>
+            <button className='btn btn-primary'>Sign In</button>
+          </Link>
+        )}
       </div>
     </div>
   );

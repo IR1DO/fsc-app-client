@@ -1,13 +1,10 @@
-import axios from 'axios';
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { updateAuthState } from '../app/auth/authSlice';
-import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
 
 // TODO front end validation
 const SignIn = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const { authState, signIn } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -23,21 +20,7 @@ const SignIn = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formData); // DEBUG
-
-    try {
-      dispatch(updateAuthState({ profile: null, pending: true }));
-      const res = await axios.post('/api/auth/sign-in', formData);
-
-      if (res) {
-        dispatch(updateAuthState({ profile: res.data, pending: false }));
-        navigate('/');
-        console.log('Sign In Successfully.');
-        
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    signIn(formData);
   };
 
   return (
@@ -108,17 +91,16 @@ const SignIn = () => {
                 className='btn font-semibold bg-gradient-to-r from-indigo-500
                 via-purple-500 to-pink-500 text-white hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 hover:opacity-90'
                 type='submit'
-                // disabled={loading}
+                disabled={authState.pending}
               >
-                {/* {loading ? (
+                {authState.pending ? (
                   <>
-                    <Spinner size='sm' />
+                    <span className='loading loading-spinner loading-md'></span>
                     <span className='pl-3'>Loading...</span>
                   </>
                 ) : (
                   'Sign In'
-                )} */}
-                Sign In
+                )}
               </button>
             </form>
 
@@ -128,12 +110,6 @@ const SignIn = () => {
                 Sign Up
               </Link>
             </div>
-
-            {/* {errorMessage && (
-            <Alert className='mt-5' color='failure'>
-              {errorMessage}
-            </Alert>
-          )} */}
           </div>
         </div>
       </div>
