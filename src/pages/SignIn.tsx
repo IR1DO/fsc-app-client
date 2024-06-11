@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
+import { Backpack } from 'lucide-react';
 
 // TODO front end validation
 const SignIn = () => {
@@ -29,7 +30,10 @@ const SignIn = () => {
         {/* left */}
         <div className='flex-1'>
           <Link to='/' className='font-bold dark:text-white text-6xl font-msz'>
-            家校通
+            <div className='flex flex-row items-center gap-6 ml-2'>
+              <Backpack className='scale-[2]' />
+              家校通
+            </div>
           </Link>
           <p className='text-md my-5'>
             You can sign in with your email and password.

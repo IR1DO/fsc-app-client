@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { themeChange } from 'theme-change';
 import useAuth from '../hooks/useAuth';
+import { Backpack } from 'lucide-react';
 
 const Header = () => {
   const { authState, loggedIn, signOut } = useAuth();
@@ -53,6 +54,7 @@ const Header = () => {
           </ul>
         </div>
         <Link to='/' className='btn btn-ghost text-2xl font-msz'>
+          <Backpack />
           家校通
         </Link>
       </div>
@@ -77,7 +79,12 @@ const Header = () => {
             <div tabIndex={0} role='button' className='m-1 btn'>
               <div className='avatar'>
                 <div className='w-8 h-8 rounded-full'>
-                  <img src={authState.profile?.avatar} />
+                  <img
+                    src={
+                      authState.profile?.avatar ||
+                      'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Windows_10_Default_Profile_Picture.svg/768px-Windows_10_Default_Profile_Picture.svg.png?20221210150350'
+                    }
+                  />
                 </div>
               </div>
             </div>
@@ -86,7 +93,23 @@ const Header = () => {
               className='dropdown-content z-[1] menu p-2 shadow bg-base-200 rounded-box w-52'
             >
               <li>
-                <a className='text-sm font-semibold'>Profile</a>
+                <div className='flex flex-col items-start justify-center gap-0.5'>
+                  <div className='font-medium'>
+                    @{authState.profile?.username}
+                  </div>
+                  <div className='font-semibold truncate'>
+                    {authState.profile?.email}
+                  </div>
+                </div>
+              </li>
+              <div className='divider my-[-0.1rem]'></div>
+              <li>
+                <Link
+                  to={'/dashboard?tab=profile'}
+                  className='text-sm font-semibold'
+                >
+                  Profile
+                </Link>
               </li>
               <li>
                 <div onClick={signOut} className='text-sm font-semibold'>
