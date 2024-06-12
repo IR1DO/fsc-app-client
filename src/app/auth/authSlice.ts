@@ -7,6 +7,7 @@ type Profile = {
   email: string;
   avatar: string;
   role: string;
+  accessToken: string;
 };
 
 interface AuthState {

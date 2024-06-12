@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 import { getThemeState } from './app/theme/themeSlice';
 import Dashboard from './pages/Dashboard';
 import PrivateRoute from './components/PrivateRoute';
+import PostPage from './pages/PostPage';
 
 const App = () => {
   const { theme } = useSelector(getThemeState);
@@ -29,6 +30,8 @@ const App = () => {
         <Route element={<PrivateRoute />}>
           <Route path='/dashboard' element={<Dashboard />} />
         </Route>
+
+        <Route path='/post/:id' element={<PostPage />} />
       </Routes>
       <Footer />
       <ToastContainer

@@ -25,9 +25,9 @@ const SignUp = () => {
     setRole(r);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    signUp({ ...formData, role });
+    await signUp({ ...formData, role });
   };
 
   return (

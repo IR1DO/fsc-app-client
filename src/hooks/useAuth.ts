@@ -25,6 +25,7 @@ export interface SignInRes {
     avatar: string;
     role: string;
   };
+  token: string;
 }
 
 const useAuth = () => {
@@ -41,7 +42,7 @@ const useAuth = () => {
     if (res) {
       dispatch(
         updateAuthState({
-          profile: res.profile,
+          profile: { ...res.profile, accessToken: res.token },
           pending: false,
         })
       );

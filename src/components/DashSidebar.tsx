@@ -52,21 +52,23 @@ export default function DashSidebar() {
               </div>
             </Link>
           </li>
-          <li>
-            <Link
-              to={'/dashboard?tab=create-post'}
-              className={`text-base block ${
-                tab === 'create-post' ? 'bg-base-300' : ''
-              }`}
-            >
-              <div className='flex justify-between items-center'>
-                <div className='flex gap-3'>
-                  <SquarePen />
-                  <span>Create Post</span>
+          {authState.profile?.role !== 'STUDENT' ? (
+            <li>
+              <Link
+                to={'/dashboard?tab=create-post'}
+                className={`text-base block ${
+                  tab === 'create-post' ? 'bg-base-300' : ''
+                }`}
+              >
+                <div className='flex justify-between items-center'>
+                  <div className='flex gap-3'>
+                    <SquarePen />
+                    <span>Create Post</span>
+                  </div>
                 </div>
-              </div>
-            </Link>
-          </li>
+              </Link>
+            </li>
+          ) : null}
           <li>
             <button onClick={signOut} className='text-base block'>
               <div className='flex justify-between items-center'>
