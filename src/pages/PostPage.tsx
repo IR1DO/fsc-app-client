@@ -15,10 +15,6 @@ type Post = {
   authorId: string;
 };
 
-interface PostRes {
-  post: Post;
-}
-
 const emptyPost: Post = {
   id: '',
   title: '',
@@ -38,9 +34,9 @@ const PostPage = () => {
   useEffect(() => {
     const fetchPost = async () => {
       setLoading(true);
-      const res = await runAxiosAsync<PostRes>(axios.get(`/api/post/${id}`));
+      const res = await runAxiosAsync<Post>(axios.get(`/api/post/${id}`));
       if (res) {
-        setPost(res.post);
+        setPost(res);
       }
       setLoading(false);
     };
