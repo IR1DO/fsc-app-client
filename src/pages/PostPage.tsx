@@ -3,28 +3,29 @@ import { useParams } from 'react-router-dom';
 import { runAxiosAsync } from '../utils/runAxiosAsync';
 import axios from 'axios';
 import PostSkeleton from './PostSkeleton';
+import { Post, emptyPost } from '../utils/types';
 
-type Post = {
-  id: string;
-  title: string;
-  category: string;
-  content: string;
-  image: string;
-  createdAt: Date;
-  updatedAt: Date;
-  authorId: string;
-};
+// export type Post = {
+//   id: string;
+//   title: string;
+//   category: string;
+//   content: string;
+//   image: string;
+//   createdAt: Date;
+//   updatedAt: Date;
+//   authorId: string;
+// };
 
-const emptyPost: Post = {
-  id: '',
-  title: '',
-  category: '',
-  content: '',
-  image: '',
-  createdAt: new Date(0),
-  updatedAt: new Date(0),
-  authorId: '',
-};
+// export const emptyPost: Post = {
+//   id: '',
+//   title: '',
+//   category: '',
+//   content: '',
+//   image: '',
+//   createdAt: new Date(0),
+//   updatedAt: new Date(0),
+//   authorId: '',
+// };
 
 const PostPage = () => {
   const { id } = useParams();
@@ -34,7 +35,9 @@ const PostPage = () => {
   useEffect(() => {
     const fetchPost = async () => {
       setLoading(true);
-      const res = await runAxiosAsync<Post>(axios.get(`/api/post/${id}`));
+      const res = await runAxiosAsync<Post>(
+        axios.get(`/api/post/detail/${id}`)
+      );
       if (res) {
         setPost(res);
       }

@@ -1,23 +1,41 @@
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import FileUploader from './FileUploader';
-import { useState } from 'react';
+import FileUploader from '../components/FileUploader';
+import { useEffect, useState } from 'react';
 import { UploadWidgetResult } from '@bytescale/upload-widget';
 import { UrlBuilder } from '@bytescale/sdk';
 import { extractUrl } from '../utils/helper';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { runAxiosAsync } from '../utils/runAxiosAsync';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import useAuth from '../hooks/useAuth';
-import { emptyPost } from '../utils/types';
+import { Post, emptyPost } from '../utils/types';
 
-const CreatePost = () => {
+const UpdatePost = () => {
+  const { id } = useParams();
   const { authState } = useAuth();
+  const [loading, setLoading] = useState(false);
   const [file, setFile] = useState('');
   const [formData, setFormData] = useState(emptyPost);
   const [busy, setBusy] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      setLoading(true);
+      const res = await runAxiosAsync<Post>(
+        axios.get(`/api/post/detail/${id}`)
+      );
+      if (res) {
+        setFormData({ ...res });
+        setFile(res.image);
+      }
+      setLoading(false);
+    };
+
+    fetchPost();
+  }, [id]);
 
   const handleFileUpload = (files: UploadWidgetResult[]) => {
     const file = files[0];
@@ -44,8 +62,8 @@ const CreatePost = () => {
 
     setBusy(true);
     const res = await runAxiosAsync<{ message: string; postId: string }>(
-      axios.post(
-        '/api/post/create',
+      axios.patch(
+        `/api/post/update/${id}`,
         { ...formData, image: file },
         {
           headers: {
@@ -55,15 +73,19 @@ const CreatePost = () => {
       )
     );
     if (res) {
-      toast.success('Post create successful.');
-      navigate(`/post/${res.postId}`);
+      toast.success('Post update successful.');
+      navigate(`/post/${id}`);
     }
     setBusy(false);
   };
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className='p-3 w-9/12 mx-auto min-h-screen '>
-      <h1 className='text-center text-3xl my-7 font-semibold'>Create a post</h1>
+      <h1 className='text-center text-3xl my-7 font-semibold'>Update a post</h1>
 
       <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
         <div className='flex flex-col gap-4 sm:flex-row'>
@@ -78,6 +100,7 @@ const CreatePost = () => {
                 title: e.target.value,
               }));
             }}
+            value={formData.title}
           />
 
           <select
@@ -88,6 +111,7 @@ const CreatePost = () => {
                 category: e.target.value,
               }));
             }}
+            value={formData.category}
           >
             <option selected value='UNCATEGORIZED'>
               Select a category
@@ -139,6 +163,7 @@ const CreatePost = () => {
               content: value,
             }));
           }}
+          value={formData.content}
         />
 
         <button
@@ -161,4 +186,4 @@ const CreatePost = () => {
   );
 };
 
-export default CreatePost;
+export default UpdatePost;

@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Header from './components/Header';
-import Teachers from './pages/Teachers';
 import About from './pages/About';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
@@ -13,6 +12,8 @@ import { getThemeState } from './app/theme/themeSlice';
 import Dashboard from './pages/Dashboard';
 import PrivateRoute from './components/PrivateRoute';
 import PostPage from './pages/PostPage';
+import Posts from './pages/Posts';
+import UpdatePost from './pages/UpdatePost';
 
 const App = () => {
   const { theme } = useSelector(getThemeState);
@@ -22,13 +23,14 @@ const App = () => {
       <Header />
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/teachers' element={<Teachers />} />
+        <Route path='/posts' element={<Posts />} />
         <Route path='/about' element={<About />} />
         <Route path='/sign-in' element={<SignIn />} />
         <Route path='/sign-up' element={<SignUp />} />
 
         <Route element={<PrivateRoute />}>
           <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='/update-post/:id' element={<UpdatePost />} />
         </Route>
 
         <Route path='/post/:id' element={<PostPage />} />
