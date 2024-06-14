@@ -11,6 +11,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import useAuth from '../hooks/useAuth';
 import { Post, emptyPost } from '../utils/types';
+import DeniedPage from './DeniedPage';
 
 const UpdatePost = () => {
   const { id } = useParams();
@@ -81,6 +82,10 @@ const UpdatePost = () => {
 
   if (loading) {
     return <div>Loading...</div>;
+  }
+
+  if (authState.profile?.role === 'STUDENT') {
+    return <DeniedPage />;
   }
 
   return (

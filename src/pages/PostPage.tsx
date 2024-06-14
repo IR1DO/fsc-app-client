@@ -4,6 +4,7 @@ import { runAxiosAsync } from '../utils/runAxiosAsync';
 import axios from 'axios';
 import PostSkeleton from './PostSkeleton';
 import { Post, emptyPost } from '../utils/types';
+import NotFoundPage from './NotFoundPage';
 
 const PostPage = () => {
   const { id } = useParams();
@@ -30,13 +31,7 @@ const PostPage = () => {
   }
 
   if (!post.id) {
-    return (
-      <div className='min-h-screen flex flex-col md:flex-row w-full items-center'>
-        <div className='flex-1 flex justify-center'>
-          <div className='text-2xl'>404 Not Found</div>
-        </div>
-      </div>
-    );
+    return <NotFoundPage />;
   }
 
   return (

@@ -14,12 +14,15 @@ import PrivateRoute from './components/PrivateRoute';
 import PostPage from './pages/PostPage';
 import Posts from './pages/Posts';
 import UpdatePost from './pages/UpdatePost';
+import NotFoundPage from './pages/NotFoundPage';
+import ScrollToTop from './components/ScrollToTop';
 
 const App = () => {
   const { theme } = useSelector(getThemeState);
 
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Header />
       <Routes>
         <Route path='/' element={<Home />} />
@@ -34,6 +37,8 @@ const App = () => {
         </Route>
 
         <Route path='/post/:id' element={<PostPage />} />
+
+        <Route path='*' element={<NotFoundPage />} />
       </Routes>
       <Footer />
       <ToastContainer
