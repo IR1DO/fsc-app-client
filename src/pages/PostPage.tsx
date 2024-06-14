@@ -5,28 +5,6 @@ import axios from 'axios';
 import PostSkeleton from './PostSkeleton';
 import { Post, emptyPost } from '../utils/types';
 
-// export type Post = {
-//   id: string;
-//   title: string;
-//   category: string;
-//   content: string;
-//   image: string;
-//   createdAt: Date;
-//   updatedAt: Date;
-//   authorId: string;
-// };
-
-// export const emptyPost: Post = {
-//   id: '',
-//   title: '',
-//   category: '',
-//   content: '',
-//   image: '',
-//   createdAt: new Date(0),
-//   updatedAt: new Date(0),
-//   authorId: '',
-// };
-
 const PostPage = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
@@ -49,6 +27,16 @@ const PostPage = () => {
 
   if (loading) {
     return <PostSkeleton />;
+  }
+
+  if (!post.id) {
+    return (
+      <div className='min-h-screen flex flex-col md:flex-row w-full items-center'>
+        <div className='flex-1 flex justify-center'>
+          <div className='text-2xl'>404 Not Found</div>
+        </div>
+      </div>
+    );
   }
 
   return (
